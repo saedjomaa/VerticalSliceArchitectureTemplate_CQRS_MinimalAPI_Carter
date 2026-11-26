@@ -1,0 +1,1 @@
+# VerticalSliceArchitectureTemplate_CQRS_MinimalAPI

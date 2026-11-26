@@ -1,0 +1,160 @@
+@WebAPI_HostAddress = http://localhost:5188
+@studentId = 11111111-1111-4111-8111-111111111111
+@databaseCourseId = aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa2
+@webApiCourseId = aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa3
+
+# OpenAPI document
+GET {{WebAPI_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
+
+# List students
+GET {{WebAPI_HostAddress}}/api/students?page=1&pageSize=20
+Accept: application/json
+
+###
+
+# Get a student by ID
+GET {{WebAPI_HostAddress}}/api/students/{{studentId}}
+Accept: application/json
+
+###
+
+# List courses
+GET {{WebAPI_HostAddress}}/api/courses?page=1&pageSize=20
+Accept: application/json
+
+###
+
+# Get a course by ID
+GET {{WebAPI_HostAddress}}/api/courses/{{databaseCourseId}}
+Accept: application/json
+
+###
+
+# Create a student
+POST {{WebAPI_HostAddress}}/api/students
+Content-Type: application/json
+
+{
+  "fullName": "Layla Hassan"
+}
+
+###
+
+# Create a course with twelve seats
+POST {{WebAPI_HostAddress}}/api/courses
+Content-Type: application/json
+
+{
+  "title": "Software Design",
+  "capacity": 12
+}
+
+###
+
+# Enroll in Database Fundamentals (expected HTTP 204)
+POST {{WebAPI_HostAddress}}/api/students/{{studentId}}/enrollments
+Content-Type: application/json
+
+{
+  "courseId": "{{databaseCourseId}}"
+}
+
+###
+
+# Enroll in ASP.NET Core Web API (expected HTTP 204)
+POST {{WebAPI_HostAddress}}/api/students/{{studentId}}/enrollments
+Content-Type: application/json
+
+{
+  "courseId": "{{webApiCourseId}}"
+}
+
+###
+
+# List courses a student is enrolled in (includes the seeded enrollment)
+GET {{WebAPI_HostAddress}}/api/students/{{studentId}}/courses
+Accept: application/json
+
+###
+
+# Repeat enrollment in Database Fundamentals (expected HTTP 409)
+POST {{WebAPI_HostAddress}}/api/students/{{studentId}}/enrollments
+Content-Type: application/json
+
+{
+  "courseId": "{{databaseCourseId}}"
+}
+
+###
+
+# Get the Database Fundamentals enrollment
+GET {{WebAPI_HostAddress}}/api/students/{{studentId}}/enrollments/{{databaseCourseId}}
+Accept: application/json
+
+###
+
+# Cancel the Database Fundamentals enrollment and release the seat (expected HTTP 204)
+DELETE {{WebAPI_HostAddress}}/api/students/{{studentId}}/enrollments/{{databaseCourseId}}
+
+###
+
+# Get the canceled enrollment (expected HTTP 404)
+GET {{WebAPI_HostAddress}}/api/students/{{studentId}}/enrollments/{{databaseCourseId}}
+Accept: application/json
+
+###
+
+# Check API and SQLite readiness
+GET {{WebAPI_HostAddress}}/health
+###
+
+# ---------- External API (JSONPlaceholder) ----------
+
+# List external users, page 1 of 5 (expected HTTP 200, totalCount 10)
+GET {{WebAPI_HostAddress}}/api/jsonplaceholder/users?page=1&pageSize=5
+Accept: application/json
+
+###
+
+# Get external user 1 (expected HTTP 200)
+GET {{WebAPI_HostAddress}}/api/jsonplaceholder/users/1
+Accept: application/json
+
+###
+
+# Get a missing external user (expected HTTP 404, JsonPlaceholder.UserNotFound)
+GET {{WebAPI_HostAddress}}/api/jsonplaceholder/users/999
+Accept: application/json
+
+###
+
+# Invalid external user id (expected HTTP 400)
+GET {{WebAPI_HostAddress}}/api/jsonplaceholder/users/0
+Accept: application/json
+
+###
+
+# Create an external post (expected HTTP 201, id 101; JSONPlaceholder does not persist it)
+POST {{WebAPI_HostAddress}}/api/jsonplaceholder/posts
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "title": "Hello from the template",
+  "body": "Created through IJsonPlaceholderClient."
+}
+
+###
+
+# Create an external post with an empty title (expected HTTP 400)
+POST {{WebAPI_HostAddress}}/api/jsonplaceholder/posts
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "title": "",
+  "body": "Missing title."
+}

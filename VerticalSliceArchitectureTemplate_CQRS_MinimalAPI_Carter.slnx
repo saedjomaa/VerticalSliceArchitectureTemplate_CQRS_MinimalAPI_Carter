@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="AGENTS.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="Requirements.md" />
+  </Folder>
+  <Project Path="Domain/Domain.csproj" Id="d0878416-53f1-448c-856d-2508ad5cfb1a" />
+  <Project Path="WebAPI/WebAPI.csproj" Id="0ade2cc7-075e-480a-9740-0bb7fc5e632b" />
+</Solution>
